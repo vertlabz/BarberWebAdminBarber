@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
+const publicApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.BACKEND_URL || ''
+
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_API_BASE_URL: publicApiBaseUrl
+  },
 
   /**
    * Proxy API requests to the backend.
