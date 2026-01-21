@@ -3,13 +3,14 @@ const nextConfig = {
   reactStrictMode: true,
 
   /**
-   * Proxy de API (recomendado)
-   * - Em DEV: BACKEND_URL = http://localhost:3000 (backend BackPack)
-   * - Em PROD (Vercel): BACKEND_URL = https://SEU-BACKEND.vercel.app
+   * Proxy API requests to the backend.
+   * This avoids CORS + preflight (OPTIONS 405) issues when the admin runs on a
+   * different origin than the backend.
    *
-   * O front SEMPRE chama /api/* (mesma origem do Admin),
-   * e o Next faz o rewrite para o backend — evitando CORS/preflight (OPTIONS 405)
-   * e evitando dor de cabeça com cookies httpOnly (refresh token).
+   * Usage:
+   * - Run backend at http://localhost:3000
+   * - Run this admin at http://localhost:3001
+   * - Call APIs as /api/* from the browser
    */
   async rewrites() {
     const backend = process.env.BACKEND_URL || 'http://localhost:3000'
