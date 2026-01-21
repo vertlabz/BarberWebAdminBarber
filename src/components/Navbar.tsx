@@ -1,31 +1,14 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useState } from 'react'
 import Button from './Button'
 import { clearAuth, getAuth } from '@/lib/auth'
-import type { CurrentUser } from '@/types'
 
 export default function Navbar() {
   const router = useRouter()
-  // IMPORTANT: avoid hydration mismatch by only reading localStorage on the client after mount.
-  const [mounted, setMounted] = useState(false)
-  const [auth, setAuth] = useState<{ token: string; user: CurrentUser } | null>(null)
-
-  useEffect(() => {
-    setMounted(true)
-    setAuth(getAuth())
-
-    // Keep navbar in sync if auth changes in another tab.
-    const onStorage = () => setAuth(getAuth())
-    window.addEventListener('storage', onStorage)
-    return () => window.removeEventListener('storage', onStorage)
-  }, [])
-
-  const isProvider = useMemo(() => Boolean(auth?.user?.isProvider), [auth])
+  const auth = typeof window !== 'undefined' ? getAuth() : null
 
   async function handleLogout() {
     clearAuth()
-    setAuth(null)
     router.push('/login')
   }
 
@@ -40,7 +23,7 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-3">
-          {mounted && isProvider && (
+          {auth?.user.isProvider && (
             <>
               <Link href="/provider/dashboard" className="text-sm text-slate-300 hover:text-white">
                 Painel do barbeiro
@@ -54,7 +37,7 @@ export default function Navbar() {
             Meus agendamentos
           </Link>
 
-          {mounted && auth ? (
+          {auth ? (
             <Button variant="ghost" onClick={handleLogout}>
               Sair
             </Button>
