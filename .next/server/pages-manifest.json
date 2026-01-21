@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/login": "pages/login.js",
+  "/provider/settings": "pages/provider/settings.js",
+  "/provider/dashboard": "pages/provider/dashboard.js",
   "/dashboard": "pages/dashboard.js"
 }
